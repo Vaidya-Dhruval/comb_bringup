@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot name="combined_robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+    
+    <!-- Include the Kiwi Cell description -->
+    <xacro:include filename="$(find kiwi_cell_description)/urdf/kiwi_cell.urdf.xacro"/>
+    <xacro:kiwi_cell prefix="kiwi_"/>
+
+    <!-- Include the Motoman GP7 description -->
+    <xacro:include filename="$(find motoman_gp7_description)/urdf/gp7_macro.xacro"/>
+    <xacro:motoman_gp7 prefix="gp7_"/>
+
+    <!-- Include the Robotiq 2f 85 Gripper description -->
+    <xacro:include filename="$(find robotiq_description)/urdf/robotiq_2f_85_gripper.urdf.xacro"/>
+    <xacro:robotiq_2f_85_gripper prefix="robotiq_"/>
+
+    <!-- Define a fixed joint between World and Kiwi Base Link -->
+    <link name="world"/>
+    <joint name="world_to_kiwi_base_link" type="fixed">
+        <parent link="world"/>
+        <child link="kiwi_base_link"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <!-- Joint between Kiwi and GP7 -->
+    <joint name="kiwi_to_gp7" type="fixed">
+        <origin xyz="0 0 0" rpy="0 0 3.15"/>
+        <parent link="kiwi_robot_base_plate_link"/>
+        <child link="gp7_base_link"/>
+    </joint>
+
+    <!-- Joint between GP7 and Robotiq Gripper -->
+    <joint name="gp7_to_gripper" type="fixed">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <parent link="gp7_tool0"/>
+        <child link="robotiq_85_base_link"/>
+    </joint>
+
+</robot>
